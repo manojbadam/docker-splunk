@@ -8,11 +8,11 @@ if [ "$1" = 'splunk' ]; then
 elif [ "$1" = 'start-service' ]; then
   rm -f /opt/splunk/etc/system/local/server.conf /opt/splunk/etc/system/local/README
   if [[ "$SPLUNK_CLIENTNAME" != "" && "$SPLUNK_SERVERNAME" != "" && "$SPLUNK_SERVERPORT" != "" && "$SPLUNK_HOSTNAME" != "" && "$SPLUNK_INDEXNAME" != "" ]]; then
-    sed -i "s/<<HostName>>/$SPLUNK_HOSTNAME/g" /opt/splunk/etc/system/local/inputs.conf
-    sed -i "s/<<IndexName>>/$SPLUNK_INDEXNAME/g" /opt/splunk/etc/system/local/inputs.conf
-    sed -i "s/<<SplunkClientName>>/$SPLUNK_CLIENTNAME/g" /opt/splunk/etc/system/local/deploymentclient.conf
-    sed -i "s/<<SplunkDeployServerHost>>/$SPLUNK_SERVERNAME/g" /opt/splunk/etc/system/local/deploymentclient.conf
-    sed -i "s/<<SplunkDeployServerPort>>/$SPLUNK_SERVERPORT/g" /opt/splunk/etc/system/local/deploymentclient.conf
+    sed -i "s/<<HostName>>/$SPLUNK_HOSTNAME/g" /var/opt/splunk/etc/system/local/inputs.conf
+    sed -i "s/<<IndexName>>/$SPLUNK_INDEXNAME/g" /var/opt/splunk/etc/system/local/inputs.conf
+    sed -i "s/<<SplunkClientName>>/$SPLUNK_CLIENTNAME/g" /var/opt/splunk/etc/system/local/deploymentclient.conf
+    sed -i "s/<<SplunkDeployServerHost>>/$SPLUNK_SERVERNAME/g" /var/opt/splunk/etc/system/local/deploymentclient.conf
+    sed -i "s/<<SplunkDeployServerPort>>/$SPLUNK_SERVERPORT/g" /var/opt/splunk/etc/system/local/deploymentclient.conf
   else
     if [[ -f /opt/splunk/etc/system/local/inputs.conf && -f /opt/splunk/etc/system/local/deploymentclient.conf && -f /opt/splunk/etc/system/local/limits.conf && -f /opt/splunk/etc/system/local/props.conf ]]; then
       yes | cp -f /opt/splunk/etc/system/local/* /var/opt/splunk/etc/system/local/*
