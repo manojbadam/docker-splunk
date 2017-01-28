@@ -15,7 +15,10 @@ elif [ "$1" = 'start-service' ]; then
     sed -i "s/<<SplunkDeployServerPort>>/$SPLUNK_SERVERPORT/g" /var/opt/splunk/etc/system/local/deploymentclient.conf
   else
     if [[ -f /opt/splunk/etc/system/local/inputs.conf && -f /opt/splunk/etc/system/local/deploymentclient.conf && -f /opt/splunk/etc/system/local/limits.conf && -f /opt/splunk/etc/system/local/props.conf ]]; then
-      yes | cp -f /opt/splunk/etc/system/local/* /var/opt/splunk/etc/system/local/*
+      cp -f /opt/splunk/etc/system/local/inputs.conf /var/opt/splunk/etc/system/local/inputs.conf
+      cp -f /opt/splunk/etc/system/local/deploymentclient.conf /var/opt/splunk/etc/system/local/deploymentclient.conf
+      cp -f /opt/splunk/etc/system/local/limits.conf /var/opt/splunk/etc/system/local/limits.conf
+      cp -f /opt/splunk/etc/system/local/props.conf /var/opt/splunk/etc/system/local/props.conf
     else
       echo "ERROR! Please specify Environment variables for splunk configuration"
       exit 1
