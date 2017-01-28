@@ -6,6 +6,21 @@ if [ "$1" = 'splunk' ]; then
   shift
   sudo -HEu ${SPLUNK_USER} ${SPLUNK_HOME}/bin/splunk "$@"
 elif [ "$1" = 'start-service' ]; then
+  rm -f /opt/splunk/etc/system/local/server.conf /opt/splunk/etc/system/local/README
+  if [[ "$SPLUNK_CLIENTNAME" != "" && "$SPLUNK_SERVERNAME" != "" && "$SPLUNK_SERVERPORT" != "" && "$SPLUNK_HOSTNAME" != "" && "$SPLUNK_INDEXNAME" != "" ]]; then
+    sed -i "s/<<HostName>>/$SPLUNK_HOSTNAME/g" /opt/splunk/etc/system/local/inputs.conf
+    sed -i "s/<<IndexName>>/$SPLUNK_INDEXNAME/g" /opt/splunk/etc/system/local/inputs.conf
+    sed -i "s/<<SplunkClientName>>/$SPLUNK_CLIENTNAME/g" /opt/splunk/etc/system/local/deploymentclient.conf
+    sed -i "s/<<SplunkDeployServerHost>>/$SPLUNK_SERVERNAME/g" /opt/splunk/etc/system/local/deploymentclient.conf
+    sed -i "s/<<SplunkDeployServerPort>>/$SPLUNK_SERVERPORT/g" /opt/splunk/etc/system/local/deploymentclient.conf
+  else
+    if [[ -f /opt/splunk/etc/system/local/inputs.conf && -f /opt/splunk/etc/system/local/deploymentclient.conf && -f /opt/splunk/etc/system/local/limits.conf && -f /opt/splunk/etc/system/local/props.conf ]]; then
+      yes | cp -f /opt/splunk/etc/system/local/* /var/opt/splunk/etc/system/local/*
+    else
+      echo "ERROR! Please specify Environment variables for splunk configuration"
+      exit 1
+    fi
+  fi
   # If user changed SPLUNK_USER to root we want to change permission for SPLUNK_HOME
   if [[ "${SPLUNK_USER}:${SPLUNK_GROUP}" != "$(stat --format %U:%G ${SPLUNK_HOME})" ]]; then
     chown -R ${SPLUNK_USER}:${SPLUNK_GROUP} ${SPLUNK_HOME}

@@ -1,0 +1,11 @@
+FROM splunk/universalforwarder:6.5.0
+
+COPY ste-entrypoint.sh /sbin/ste-entrypoint.sh
+COPY inputs.conf /var/opt/splunk/etc/system/local/inputs.conf
+COPY limits.conf /var/opt/splunk/etc/system/local/limits.conf
+COPY props.conf /var/opt/splunk/etc/system/local/props.conf
+COPY deploymentclient.conf /var/opt/splunk/etc/system/local/deploymentclient.conf
+RUN chmod +x /sbin/ste-entrypoint.sh
+
+ENTRYPOINT ["/sbin/ste-entrypoint.sh"]
+CMD ["start-service"]
